@@ -4,6 +4,7 @@ import (
 	models "app-test/src/pkg"
 	"app-test/src/pkg/config"
 	"app-test/src/pkg/datasource"
+	"app-test/src/pkg/logger"
 	AppConfig "app-test/src/web/config"
 	"app-test/src/web/entity"
 	"app-test/src/web/middleware"
@@ -28,10 +29,10 @@ func Run(configPath string) {
 	}
 
 	// 初始化日志
-	models.InitLog("debug", loadConfig.Web.LogPath)
+	logger.InitLog("debug", loadConfig.Web.LogPath)
 
 	initDB(loadConfig)
-	models.Debug("数据库加载完成.......")
+	logger.Debug("数据库加载完成.......")
 
 	// 如果不存在则创建数据库
 	if !datasource.DB.HasTable(&entity.Email{}) {

@@ -3,6 +3,7 @@ package models
 import (
 	"app-test/src/pkg/config"
 	"app-test/src/pkg/datasource"
+	"app-test/src/pkg/logger"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
@@ -19,7 +20,7 @@ func InitDB(config *config.Config) {
 	} else if config.DataSource.DBType == "sqlite3" {
 		config.DataSource.DSN = config.SQLite.DSN()
 	}
-	Info(config.DataSource.DSN)
+	logger.Info(config.DataSource.DSN)
 	gdb, err = gorm.Open(config.DataSource.DBType, config.DataSource.DSN)
 	if err != nil {
 		panic(err)
