@@ -16,6 +16,7 @@ type Config struct {
 type Web struct {
 	Domain       string
 	StaticPath   string
+	LogPath      string
 	Port         int
 	ReadTimeout  int
 	WriteTimeout int

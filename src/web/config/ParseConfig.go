@@ -17,6 +17,7 @@ func LoadConfig(configPath string) (c *config.Config, err error) {
 	c = &config.Config{}
 	c.Web.StaticPath = v.GetString("web.static_path")
 	c.Web.Domain = v.GetString("web.domain")
+	c.Web.LogPath = v.GetString("web.logPath")
 	c.Web.Port = v.GetInt("web.port")
 	c.Web.ReadTimeout = v.GetInt("web.read_timeout")
 	c.Web.WriteTimeout = v.GetInt("web.write_timeout")

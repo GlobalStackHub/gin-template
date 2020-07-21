@@ -3,11 +3,12 @@ package application
 import (
 	models "app-test/src/pkg"
 	"app-test/src/pkg/config"
+	"app-test/src/pkg/datasource"
 	AppConfig "app-test/src/web/config"
+	"app-test/src/web/entity"
 	"app-test/src/web/middleware"
 	routers "app-test/src/web/router"
 	"app-test/support/convert"
-	"app-test/support/logger"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	"net/http"
@@ -16,19 +17,26 @@ import (
 
 // 运行
 func Run(configPath string) {
+	// 初始化配置项
 	if configPath == "" {
 		configPath = "./config.yaml"
 	}
-	logger.InitLog("debug", "./data/log/log.log")
-
 	// 加载配置
 	loadConfig, err := AppConfig.LoadConfig(configPath)
 	if err != nil {
 		panic(err)
 	}
 
+	// 初始化日志
+	models.InitLog("debug", loadConfig.Web.LogPath)
+
 	initDB(loadConfig)
-	logger.Debug("数据库加载完成.......")
+	models.Debug("数据库加载完成.......")
+
+	// 如果不存在则创建数据库
+	if !datasource.DB.HasTable(&entity.Email{}) {
+		datasource.DB.CreateTable(&entity.Email{})
+	}
 
 	initWeb(loadConfig)
 }
@@ -44,6 +52,7 @@ func initWeb(loadConfig *config.Config) {
 	app.NoMethod(middleware.NoMethodHandler())
 	// 崩溃恢复
 	app.Use(middleware.RecoveryMiddleware())
+
 	// 注册路由
 	routers.RegisterRouter(app)
 	go initHTTPServer(loadConfig, app)

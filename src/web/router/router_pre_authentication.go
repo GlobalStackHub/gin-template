@@ -12,9 +12,9 @@ func RegisterRouter(app *gin.Engine) {
 	app.GET("/", func(c *gin.Context) { c.String(http.StatusOK, "index.html") })
 	apiPrefix := "/api"
 	checkUserType(apiPrefix)
-	g := app.Group(apiPrefix)
 
-	RegisterApiRouterSys(g)
+	api := app.Group(apiPrefix)
+	RegisterApiRouter(api)
 }
 
 func checkUserType(apiPrefix string) {

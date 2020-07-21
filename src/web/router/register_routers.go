@@ -5,7 +5,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterApiRouterSys(app *gin.RouterGroup) {
-	menu := controller.Result{}
-	app.GET("/test/insert", menu.Insert)
+func RegisterApiRouter(app *gin.RouterGroup) {
+	testController := controller.TestController{}
+
+	app.GET("/test/insert", testController.Insert)
+
+	app.GET("/test/other", testController.Other)
 }

@@ -5,6 +5,7 @@ web:
   read_timeout: 5
   write_timeout: 5
   idle_timeout: 5
+  logPath: ./data/log/log.log
 gorm:
   debug: true
   db_type: sqlite3
